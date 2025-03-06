@@ -1,0 +1,138 @@
+﻿@model E_Ticket.Models.Actor
+
+@{
+    ViewData["Title"] = "Edit Actor";
+}
+
+<style>
+    body {
+        background-color: #141414; /* Dark theme */
+        color: white;
+        font-family: Arial, sans-serif;
+    }
+
+    .form-container {
+        max-width: 500px;
+        margin: auto;
+        background: #222;
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: 0px 4px 10px rgba(255, 255, 255, 0.1);
+        text-align: center;
+    }
+
+    h1 {
+        font-size: 24px;
+        margin-bottom: 20px;
+        font-weight: bold;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+        h1::before {
+            content: "+";
+            font-size: 30px;
+            color: #a855f7; /* Purple accent */
+            margin-right: 8px;
+        }
+
+    .form-control {
+        background-color: #333;
+        color: white;
+        border: none;
+        padding: 12px;
+        border-radius: 6px;
+    }
+
+        .form-control:focus {
+            background-color: #444;
+            color: white;
+        }
+
+    .btn-submit {
+        background-color: #e50914; /* Netflix red */
+        border: none;
+        width: 100%;
+        padding: 12px;
+        font-size: 18px;
+        border-radius: 6px;
+        transition: 0.3s;
+    }
+
+        .btn-submit:hover {
+            background-color: #ff0a16;
+        }
+
+    .btn-back {
+        display: block;
+        text-decoration: none;
+        color: white;
+        margin-top: 15px;
+        font-size: 14px;
+        transition: 0.3s;
+    }
+
+        .btn-back:hover {
+            text-decoration: underline;
+        }
+
+    .img-preview {
+        display: block;
+        width: 100%;
+        max-width: 200px;
+        margin: 10px auto;
+        border-radius: 50%;
+        border: 3px solid #e50914;
+    }
+
+    label {
+        font-weight: bold;
+        margin-top: 12px;
+        text-align: left;
+        display: block;
+    }
+</style>
+
+<div class="form-container">
+    <h1>Edit Actor</h1>
+
+    <form asp-action="Edit" method="post" enctype="multipart/form-data">
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <input type="hidden" asp-for="Id" />
+
+        <label asp-for="FirstName"></label>
+        <input asp-for="FirstName" class="form-control" placeholder="Enter first name" />
+        <span asp-validation-for="FirstName" class="text-danger"></span>
+
+        <label asp-for="LastName"></label>
+        <input asp-for="LastName" class="form-control" placeholder="Enter last name" />
+        <span asp-validation-for="LastName" class="text-danger"></span>
+
+        <label asp-for="Bio"></label>
+        <textarea asp-for="Bio" class="form-control" placeholder="Write a short biography"></textarea>
+        <span asp-validation-for="Bio" class="text-danger"></span>
+
+        <label asp-for="ProfilePicture">Actor Picture</label>
+        <input type="file" name="file" class="form-control" />
+        <span asp-validation-for="ProfilePicture" class="text-danger"></span>
+
+        @if (!string.IsNullOrEmpty(Model.ProfilePicture))
+        {
+            <img src="~/images/cast/@Model.ProfilePicture" alt="Profile Picture" class="img-preview" />
+        }
+
+        <label asp-for="News"></label>
+        <input asp-for="News" class="form-control" placeholder="Enter latest news" />
+        <span asp-validation-for="News" class="text-danger"></span>
+
+        <button type="submit" class="btn-submit">Save Changes</button>
+        <a asp-action="Index" class="btn-back">← Back to List</a>
+    </form>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

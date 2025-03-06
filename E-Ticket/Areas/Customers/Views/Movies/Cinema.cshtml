@@ -1,0 +1,122 @@
+﻿@model List<E_Ticket.Models.Cinema>
+
+<h2 class="cinemas-title">All Cinemas</h2>
+
+<div class="cinemas-container">
+    @foreach (var cinema in Model)
+    {
+        <a asp-action="Cinema" asp-route-cMovieId="@cinema.Id" class="cinema-card">
+            <img src="~/images/Cinema/@cinema.CinemaLogo" alt="@cinema.Name" class="cinema-image">
+            <div class="cinema-overlay">
+                <h3 class="cinema-name">@cinema.Name</h3>
+            </div>
+        </a>
+    }
+</div>
+
+<a asp-action="Home" class="back-button">Back to Home</a>
+
+<!-- Footer -->
+<footer class="footer">
+    <p>&copy; 2025 E-Ticket. All Rights Reserved.</p>
+</footer>
+
+<!-- Custom Styles -->
+<style>
+    /* Cinemas Title */
+    .cinemas-title {
+        font-size: 2.5rem;
+        font-weight: bold;
+        text-align: center;
+        margin: 20px 0;
+        color: white;
+    }
+
+    /* Cinemas Container */
+    .cinemas-container {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 20px;
+        padding: 20px;
+        max-width: 90%;
+        margin: auto;
+    }
+
+    /* Cinema Card */
+    .cinema-card {
+        display: block;
+        position: relative;
+        width: 250px;
+        border-radius: 10px;
+        overflow: hidden;
+        text-decoration: none;
+        transition: transform 0.3s ease-in-out;
+    }
+
+        .cinema-card:hover {
+            transform: scale(1.1);
+        }
+
+    /* Cinema Image */
+    .cinema-image {
+        width: 100%;
+        height: 320px;
+        object-fit: cover;
+        display: block;
+    }
+
+    /* Cinema Overlay */
+    .cinema-overlay {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        background: rgba(0, 0, 0, 0.7);
+        padding: 10px;
+        text-align: center;
+    }
+
+    .cinema-name {
+        color: white;
+        font-size: 1.2rem;
+        font-weight: bold;
+    }
+
+    /* Back Button */
+    .back-button {
+        display: block;
+        text-align: center;
+        margin: 20px auto;
+        padding: 10px 20px;
+        background-color: #e50914;
+        color: white;
+        text-decoration: none;
+        font-size: 1.2rem;
+        border-radius: 5px;
+        transition: background 0.3s;
+    }
+
+        .back-button:hover {
+            background-color: #b20710;
+        }
+
+    /* Footer */
+    .footer {
+        text-align: center;
+        background-color: #111;
+        color: white;
+        padding: 15px;
+        margin-top: 30px;
+        position: relative;
+        bottom: 0;
+        width: 100%;
+    }
+
+    /* Background */
+    body {
+        background-color: #141414;
+        color: white;
+        font-family: Arial, sans-serif;
+    }
+</style>

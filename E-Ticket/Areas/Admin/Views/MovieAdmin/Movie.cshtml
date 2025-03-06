@@ -1,0 +1,113 @@
+﻿@model IEnumerable<E_Ticket.Models.Movie>
+
+@{
+    ViewData["Title"] = "Movies Admin Dashboard";
+}
+
+<h1 class="text-center my-4 text-white">Movies Management</h1>
+
+<div class="text-center mb-4">
+    <a asp-area="Admin" asp-controller="MovieAdmin" asp-action="Create" class="btn btn-success px-4 py-2">➕ Add New Movie</a>
+</div>
+
+<div class="container">
+    <div class="row">
+        @foreach (var item in Model)
+        {
+            <div class="col-md-6 col-lg-4 col-xl-3 mb-4">
+                <div class="card movie-card">
+                    <img src="~/images/movies/@item.ImgUrl" class="card-img-top" alt="@item.Name">
+                    <div class="card-body">
+                        <h5 class="card-title">@item.Name</h5>
+                        <p class="text-muted"><strong>Price:</strong> $@item.Price</p>
+                        <p class="text-truncate">@item.Description</p>
+                        <div class="d-flex justify-content-between">
+                            <a asp-area="Admin" asp-controller="MovieAdmin" asp-action="Edit" asp-route-movieId="@item.Id" class="btn btn-warning btn-sm">✏ Edit</a>
+                            <a asp-area="Admin" asp-controller="MovieAdmin" asp-action="Details" asp-route-movieId="@item.Id" class="btn btn-info btn-sm">📄 Details</a>
+                            <a href="javascript:void(0);" onclick="confirmDelete(@item.Id)" class="btn btn-danger btn-sm">🗑 Delete</a>
+                        </div>
+                        <div class="mt-2">
+                            <a href="@item.TrailerUrl" class="btn btn-dark w-100" target="_blank">🎬 Watch Trailer</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</div>
+
+<style>
+    body {
+        background-color: #181818;
+        font-family: Arial, sans-serif;
+    }
+
+    h1 {
+        font-size: 2.5rem;
+        font-weight: bold;
+    }
+
+    .movie-card {
+        border-radius: 10px;
+        background-color: #222;
+        color: white;
+        overflow: hidden;
+        transition: transform 0.3s ease-in-out;
+        box-shadow: 0px 4px 10px rgba(255, 0, 0, 0.5);
+    }
+
+        .movie-card:hover {
+            transform: scale(1.05);
+        }
+
+    .card-img-top {
+        height: 300px;
+        object-fit: cover;
+    }
+
+    .text-truncate {
+        max-height: 3rem;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
+
+    .btn {
+        font-weight: bold;
+        border-radius: 8px;
+    }
+
+    .btn-warning {
+        background-color: #FFA500;
+        color: black;
+    }
+
+    .btn-info {
+        background-color: #17a2b8;
+    }
+
+    .btn-danger {
+        background-color: #dc3545;
+    }
+</style>
+
+<script>
+    function confirmDelete(movieId) {
+        console.log("Delete function called for Movie ID:", movieId); // Debugging log
+        Swal.fire({
+            title: "Are you sure?",
+            text: "This action cannot be undone!",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#d33",
+            cancelButtonColor: "#6c757d",
+            confirmButtonText: "Yes, delete it!",
+            cancelButtonText: "Cancel"
+        }).then((result) => {
+            if (result.isConfirmed) {
+                console.log("Confirmed delete for:", movieId); // Debugging log
+                window.location.href = "/Admin/MovieAdmin/Delete?movieId=" + movieId;
+            }
+        });
+    }
+</script>

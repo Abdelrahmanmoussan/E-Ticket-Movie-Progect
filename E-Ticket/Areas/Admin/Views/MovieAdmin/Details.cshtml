@@ -1,0 +1,91 @@
+﻿@model E_Ticket.Models.Movie
+
+@{
+    ViewData["Title"] = "Movie Details";
+}
+
+<div class="container text-white py-5" style="max-width: 700px;">
+    <h2 class="text-center mb-4">🎬 Movie Details</h2>
+
+    <!-- Movie Poster -->
+    <div class="text-center mb-4">
+        <img src="~/images/movies/@Model.ImgUrl" class="rounded img-fluid shadow"
+             style="max-height: 400px; object-fit: cover;" alt="Movie Poster" />
+    </div>
+
+    <!-- Movie Information -->
+    <div class="bg-dark p-4 rounded shadow">
+        <h3 class="text-danger text-center mb-3">@Model.Name</h3>
+
+        <div class="mb-3">
+            <strong>Description:</strong>
+            <p>@Model.Description</p>
+        </div>
+
+
+
+        <div class="mb-3">
+            <strong>Category:</strong> <span class="text-warning">@Model.Category.Name</span>
+        </div>
+
+        <div class="mb-3">
+            <strong>Cinema:</strong> <span class="text-info">@Model.Cinema.Name</span>
+        </div>
+
+        <div class="mb-3">
+            <strong>Price:</strong> <span class="badge bg-success">@Model.Price EGP</span>
+        </div>
+
+        <p><strong>Actors:</strong></p>
+        <div class="d-flex flex-wrap">
+            @foreach (var actor in Model.Actors)
+            {
+                <div class="me-3 text-center">
+                    <!-- Clickable Actor Image -->
+                    <a asp-area="Customers" asp-controller="Movies" asp-action="ActorDetails" asp-route-actorId="@actor.Id">
+                        <img class="rounded-circle img-fluid" src="~/images/cast/@actor.ProfilePicture"
+                             alt="@actor.FirstName"
+                             style="width: 50px; height: 50px; object-fit: cover; border: 1px solid gray;">
+                    </a>
+                    <!-- Clickable Actor Name -->
+                    <p class="text-white">
+                        <a asp-area="Customers" asp-controller="Movies" asp-action="ActorDetails" asp-route-id="@actor.Id" class="text-decoration-none text-light">
+                            @actor.FirstName
+                        </a>
+                    </p>
+                </div>
+            }
+        </div>
+
+        <div class="mb-3">
+            <strong>Start Date:</strong> <span>@Model.StartDate.ToShortDateString()</span>
+        </div>
+
+        <div class="mb-3">
+            <strong>End Date:</strong> <span>@Model.EndDate.ToShortDateString()</span>
+        </div>
+
+        <div class="mb-3">
+            <strong>Status:</strong>
+            <span class="badge @(Model.EndDate < DateOnly.FromDateTime(DateTime.Now) ? "bg-danger" :
+                        (Model.StartDate > DateOnly.FromDateTime(DateTime.Now) ? "bg-warning" : "bg-success"))">
+                @(Model.EndDate < DateOnly.FromDateTime(DateTime.Now) ? "Expired" :
+                    (Model.StartDate > DateOnly.FromDateTime(DateTime.Now) ? "Coming Soon" : "Now Showing"))
+            </span>
+        </div>
+
+        <!-- Trailer Button -->
+        @if (!string.IsNullOrEmpty(Model.TrailerUrl))
+        {
+            <div class="text-center mb-3">
+                <a href="@Model.TrailerUrl" target="_blank" class="btn btn-outline-danger">🎥 Watch Trailer</a>
+            </div>
+        }
+
+        <!-- Action Buttons -->
+        <div class="text-center">
+            <a asp-area="Admin" asp-controller="MovieAdmin" asp-action="Edit" asp-route-MovieId="@Model.Id" class="btn btn-warning px-4">✏ Edit</a>
+            <a asp-action="Index" class="btn btn-light px-4">⬅ Back to List</a>
+        </div>
+    </div>
+</div>

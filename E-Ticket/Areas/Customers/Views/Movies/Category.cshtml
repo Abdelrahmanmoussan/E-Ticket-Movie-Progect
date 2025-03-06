@@ -1,0 +1,85 @@
+﻿@model List<E_Ticket.Models.Category>
+
+<h2 class="category-title">Browse Categories</h2>
+
+<div class="category-container">
+    @foreach (var category in Model)
+    {
+        <a asp-action="Category" asp-route-cMovie="@category.Id" class="category-card">
+            <div class="category-overlay">
+                <h3 class="category-name">@category.Name</h3>
+            </div>
+        </a>
+    }
+</div>
+
+
+
+<!-- Custom Styles -->
+<style>
+    /* General Styles */
+    body {
+        background-color: #141414;
+        color: white;
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+        display: flex;
+        flex-direction: column;
+        min-height: 100vh;
+    }
+
+    /* Category Title */
+    .category-title {
+        font-size: 2rem;
+        font-weight: bold;
+        text-align: center;
+        margin: 20px 0;
+    }
+
+    /* Category Container */
+    .category-container {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 15px;
+        justify-content: center;
+        padding: 20px;
+        max-width: 70%;
+        margin: auto;
+    }
+
+    /* Category Card */
+    .category-card {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: red;
+        border-radius: 10px;
+        height: 150px;
+        text-decoration: none;
+        transition: transform 0.3s ease-in-out;
+    }
+
+        .category-card:hover {
+            transform: scale(1.1);
+        }
+
+    /* Category Overlay */
+    .category-overlay {
+        text-align: center;
+    }
+
+    .category-name {
+        color: white;
+        font-size: 1.3rem;
+        font-weight: bold;
+    }
+
+    /* Footer */
+    .footer {
+        text-align: center;
+        /* background-color: #000; */
+        padding: 15px;
+        margin-top: auto;
+    }
+</style>

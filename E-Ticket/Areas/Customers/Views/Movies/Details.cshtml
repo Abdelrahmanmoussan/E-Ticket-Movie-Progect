@@ -1,0 +1,211 @@
+﻿@model E_Ticket.Models.Movie
+
+@{
+    ViewData["Title"] = Model.Name;
+}
+
+<!-- Movie Details Section -->
+<div class="container movie-details-container mt-5">
+    <div class="row">
+
+        <div class="col-md-4">
+            <img src="@Url.Content("~/images/movies/" + Model.ImgUrl)" class="movie-poster img-fluid" alt="@Model.Name">
+        </div>
+
+        <div class="col-md-8 text-white">
+            <h1 class="fw-bold">@Model.Name</h1>
+            <p class="lead">@Model.Description</p>
+            <p><strong>Category:</strong> @Model.Category.Name</p>
+            <p><strong>Actors:</strong></p>
+            <div class="d-flex flex-wrap">
+                @foreach (var actor in Model.Actors)
+                {
+                    <div class="me-3 text-center">
+                        <!-- Clickable Actor Image -->
+                        <a asp-area="Customers" asp-controller="Movies" asp-action="ActorDetails" asp-route-actorId="@actor.Id">
+                            <img class="rounded-circle img-fluid" src="~/images/cast/@actor.ProfilePicture"
+                                 alt="@actor.FirstName"
+                                 style="width: 50px; height: 50px; object-fit: cover; border: 1px solid gray;">
+                        </a>
+                        <!-- Clickable Actor Name -->
+                        <p class="text-white">
+                            <a asp-area="Customers" asp-controller="Movies" asp-action="ActorDetails" asp-route-id="@actor.Id" class="text-decoration-none text-light">
+                                @actor.FirstName
+                            </a>
+                        </p>
+                    </div>
+                }
+            </div>
+            <p><strong>Cinema:</strong> @Model.Cinema.Name</p>
+            <p><strong>Price:</strong> @Model.Price EGP</p>
+            <div class="mb-3">
+                <strong>Start Date:</strong> <span>@Model.StartDate.ToShortDateString()</span>
+            </div>
+
+            <div class="mb-3">
+                <strong>End Date:</strong> <span>@Model.EndDate.ToShortDateString()</span>
+            </div>
+            <span class="badge @(Model.EndDate < DateOnly.FromDateTime(DateTime.Now) ? "bg-danger" : "bg-success")">
+                @(Model.EndDate < DateOnly.FromDateTime(DateTime.Now) ? "Expired" : "Now Showing")
+            </span>
+        </div>
+
+
+            <!-- Action Buttons -->
+            <div class="mt-3">
+                <a href="@Model.TrailerUrl" class="btn btn-danger btn-lg">
+                    <i class="bi bi-play-fill"></i> Watch Trailer
+                </a>
+                @if (Model.EndDate >= DateOnly.FromDateTime(DateTime.Now))
+                {
+                    <a href="#" class="btn btn-outline-light btn-lg">
+                        <i class="bi bi-ticket"></i> Book Ticket
+                    </a>
+                }
+                else
+                {
+                    <button class="btn btn-outline-secondary btn-lg" disabled>
+                        <i class="bi bi-x-circle"></i> Booking Closed
+                    </button>
+                }
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Related Movies Section -->
+<div class="container mt-5">
+    <h3 class="mb-3 text-white">Related Movies in @Model.Category.Name</h3>
+
+    <div class="movie-scroll-container">
+
+
+        <div class="movie-scroll" id="movieScroll">
+            @foreach (var movie in ViewBag.RelatedMovies as List<E_Ticket.Models.Movie>)
+            {
+                <div class="movie-card">
+                    <img src="~/images/movies/@movie.ImgUrl" class="movie-card-img" alt="@movie.Name">
+                    <div class="movie-card-overlay">
+                        <h5 class="movie-title">@movie.Name</h5>
+                        <span class="badge @(movie.EndDate < DateOnly.FromDateTime(DateTime.Now) ? "bg-danger" : "bg-success")">
+                            @(movie.EndDate < DateOnly.FromDateTime(DateTime.Now) ? "Expired" : "Now Showing")
+                        </span>
+                        <p class="price">@movie.Price EGP</p>
+                        <a href="@Url.Action("Details", "Movies", new { MovieId = movie.Id })" class="btn btn-outline-light btn-sm">View Details</a>
+                    </div>
+                </div>
+            }
+        </div>
+
+
+    </div>
+</div>
+
+<!-- Custom Styles -->
+<style>
+    /* Movie Details */
+    .movie-details-container {
+        background: #222;
+        padding: 30px;
+        border-radius: 10px;
+    }
+
+    .movie-poster {
+        border-radius: 10px;
+        box-shadow: 0px 4px 10px rgba(255, 255, 255, 0.1);
+    }
+
+    /* Related Movies */
+    .movie-scroll-container {
+        overflow-x: auto;
+        white-space: nowrap;
+        padding-bottom: 15px;
+    }
+
+    .movie-scroll {
+        display: flex;
+        gap: 15px;
+    }
+
+    .movie-card {
+        position: relative;
+        width: 250px;
+        border-radius: 10px;
+        overflow: hidden;
+        transition: transform 0.3s;
+        cursor: pointer;
+    }
+
+        .movie-card:hover {
+            transform: scale(1.1);
+        }
+
+    .movie-card-img {
+        width: 100%;
+        height: 350px;
+        object-fit: cover;
+    }
+
+    .movie-card-overlay {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        background: rgba(0, 0, 0, 0.7);
+        padding: 15px;
+        text-align: center;
+    }
+
+    .movie-title {
+        font-size: 1.2rem;
+        font-weight: bold;
+    }
+
+    .actors, .price {
+        font-size: 0.9rem;
+        margin: 5px 0;
+    }
+
+    /* Scroll Buttons */
+    .scroll-btn {
+        position: absolute;
+        top: 50%;
+        transform: translateY(-50%);
+        background: rgba(0, 0, 0, 0.7);
+        border: none;
+        color: white;
+        font-size: 24px;
+        padding: 10px 15px;
+        cursor: pointer;
+        z-index: 10;
+        border-radius: 50%;
+    }
+
+    .left {
+        left: 0;
+    }
+
+    .right {
+        right: 0;
+    }
+
+    .scroll-btn:hover {
+        background: rgba(255, 255, 255, 0.3);
+    }
+
+    /* Hide scrollbar */
+    .movie-scroll-container::-webkit-scrollbar,
+    .movie-scroll::-webkit-scrollbar {
+        display: none;
+    }
+</style>
+
+@* <script> *@
+@*     function scrollLeft() { *@
+@*         document.getElementById('movieScroll').scrollBy({ left: -300, behavior: 'smooth' }); *@
+@*     } *@
+
+@*     function scrollRight() { *@
+@*         document.getElementById('movieScroll').scrollBy({ left: 300, behavior: 'smooth' }); *@
+@*     } *@
+@* </script> *@

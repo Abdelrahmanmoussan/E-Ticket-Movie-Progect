@@ -169,7 +169,7 @@ namespace E_Ticket.Areas.Admin.Controllers
         }
 
 
-        [ValidateAntiForgeryToken]
+   
 
         public IActionResult DeleteImg(int MovieId)
         {
@@ -194,7 +194,7 @@ namespace E_Ticket.Areas.Admin.Controllers
             return RedirectToAction("NotFoundPage", "Home");
         }
 
-        [ValidateAntiForgeryToken]
+
         public IActionResult Delete(int MovieId)
         {
             var movie = movieRepository.GetOne(e => e.Id == MovieId);

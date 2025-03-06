@@ -45,10 +45,15 @@
             <div class="mb-3">
                 <strong>End Date:</strong> <span>@Model.EndDate.ToShortDateString()</span>
             </div>
-            <span class="badge @(Model.EndDate < DateOnly.FromDateTime(DateTime.Now) ? "bg-danger" : "bg-success")">
-                @(Model.EndDate < DateOnly.FromDateTime(DateTime.Now) ? "Expired" : "Now Showing")
-            </span>
-        </div>
+
+            <div class="mb-3">
+                <strong>Status:</strong>
+                <span class="badge @(Model.EndDate < DateOnly.FromDateTime(DateTime.Now) ? "bg-danger" :
+                        (Model.StartDate > DateOnly.FromDateTime(DateTime.Now) ? "bg-warning" : "bg-success"))">
+                    @(Model.EndDate < DateOnly.FromDateTime(DateTime.Now) ? "Expired" :
+                        (Model.StartDate > DateOnly.FromDateTime(DateTime.Now) ? "Coming Soon" : "Now Showing"))
+                </span>
+            </div>
 
 
             <!-- Action Buttons -->

@@ -23,8 +23,10 @@
                         <h5 class="card-title text-light">@item.Name</h5>
                         <br />
                         <h6 class="card-text text-light">Price : @item.Price EGP</h6>
-                        <span class="badge @(item.EndDate < DateOnly.FromDateTime(DateTime.Now) ? "bg-danger" : "bg-success")">
-                            @(item.EndDate < DateOnly.FromDateTime(DateTime.Now) ? "Expired" : "Now Showing")
+                        <span class="badge @(item.EndDate < DateOnly.FromDateTime(DateTime.Now) ? "bg-danger" :
+                        (item.StartDate > DateOnly.FromDateTime(DateTime.Now) ? "bg-warning" : "bg-success"))">
+                            @(item.EndDate < DateOnly.FromDateTime(DateTime.Now) ? "Expired" :
+                                (item.StartDate > DateOnly.FromDateTime(DateTime.Now) ? "Coming Soon" : "Now Showing"))
                         </span>
 
                         <div class="mt-2">
@@ -32,9 +34,6 @@
                                 <i class="fas fa-info-circle"></i> Details
                             </a>
 
-                            @* <a href="#" target="_blank" class="btn btn-outline-success btn-sm"> *@
-                            @*     <i class="fas fa-play"></i> Book Ticket *@
-                            @* </a> *@
                             @if (item.EndDate >= DateOnly.FromDateTime(DateTime.Now))
                             {
                                 <a href="#" class="btn btn-outline-success btn-sm">

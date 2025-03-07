@@ -118,7 +118,7 @@ public class ActorAdminController : Controller
             return RedirectToAction("NotFoundPage", "Home");
     }
 
-        [ValidateAntiForgeryToken]
+
 
         public IActionResult DeleteImg(int actorId)
         {

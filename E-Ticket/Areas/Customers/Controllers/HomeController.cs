@@ -21,5 +21,9 @@ namespace E_Ticket.Areas.Customers.Controllers
         {
             return View();
         }
+        public IActionResult NotFoundPage()
+        {
+            return View();
+        }
     }
 }

@@ -1,23 +1,31 @@
-﻿using E_Ticket.DataAccess.Enum;
-using E_Ticket.Models;
+﻿using E_Ticket.Models;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
 namespace E_Ticket.DataAccess
 {
-    public class ApplicationDbContext : DbContext
+    public class ApplicationDbContext : IdentityDbContext
     {
+        public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
+            : base(options)
+        {
+        }
 
         public DbSet<Movie> Movies { get; set; }
         public DbSet<Cinema> Cinemas { get; set; }
-        public DbSet<Actor> Actors  { get; set; }
+        public DbSet<Actor> Actors { get; set; }
         public DbSet<Category> Categories { get; set; }
         public DbSet<ActorMovies> ActorMovies { get; set; }
+        public DbSet<ApplicationUser> ApplicationUsers { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            // Define many-to-many relationship
+            // IMPORTANT: Ensure Identity tables are set up properly
+            base.OnModelCreating(modelBuilder);
+
             modelBuilder.Entity<ActorMovies>()
-                .HasKey(am => new { am.ActorId, am.MovieId }); // Composite primary key
+                .HasKey(am => new { am.ActorId, am.MovieId });
 
             modelBuilder.Entity<ActorMovies>()
                 .HasOne(am => am.Actor)
@@ -29,15 +37,5 @@ namespace E_Ticket.DataAccess
                 .WithMany(m => m.ActorMovies)
                 .HasForeignKey(am => am.MovieId);
         }
-        public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
-        : base(options)
-        {
-
-        }
-
-        //    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        //=> optionsBuilder.UseSqlServer("Data Source=MOUSSAN\\MSSQLSERVERS;Initial Catalog=E-Ticket;Integrated Security=True;TrustServerCertificate=True");
-
-
     }
 }

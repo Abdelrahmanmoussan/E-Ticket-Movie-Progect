@@ -82,7 +82,7 @@ namespace E_Ticket.Repositories
             IQueryable<T> query = dbSet;
 
 
-            if (!tracked) // ✅ Disable tracking if specified
+            if (!tracked) 
             {
                 query = query.AsNoTracking();
             }

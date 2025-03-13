@@ -5,10 +5,13 @@ using E_Ticket.Models;
 using E_Ticket.Repositories.IRepositories;
 using Microsoft.EntityFrameworkCore;
 using System.Linq.Expressions;
+using Microsoft.AspNetCore.Authorization;
 
 namespace E_Ticket.Areas.Admin.Controllers
 {
     [Area("Admin")]
+    [Authorize(Roles = "Admin,SuperAdmin,Company")]
+
     public class CategoryAdminController : Controller
     {
 

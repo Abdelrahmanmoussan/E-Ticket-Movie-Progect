@@ -1,11 +1,14 @@
 ﻿using E_Ticket.Models;
 using E_Ticket.Repositories.IRepositories;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace E_Ticket.Areas.Admin.Controllers
 {
     [Area("Admin")]
-public class ActorAdminController : Controller
+    [Authorize(Roles = "Admin,SuperAdmin,Company")]
+
+    public class ActorAdminController : Controller
 {
 
     private readonly IMovieRepository movieRepository;

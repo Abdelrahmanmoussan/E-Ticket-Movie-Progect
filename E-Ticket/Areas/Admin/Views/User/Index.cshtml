@@ -1,0 +1,81 @@
+﻿@model List<ApplicationUser>
+@{
+    ViewData["Title"] = "Users";
+}
+
+<div class="container my-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1 class="text-light">Users</h1>
+        <a class="btn btn-danger px-4 py-2 fw-bold shadow-lg" href="/Admin/User/Create">+ Add User</a>
+    </div>
+
+    <div class="row mb-4">
+        <div class="col-md-6 mx-auto">
+            <form class="input-group">
+                <input type="text" class="form-control bg-dark text-white border-secondary rounded-start" placeholder="Search users..." name="query">
+                <button class="btn btn-danger fw-bold rounded-end" type="submit">Search</button>
+            </form>
+        </div>
+    </div>
+
+    <div class="row">
+        @foreach (var user in Model)
+        {
+            <div class="col-md-4 mb-3">
+                <div class="card bg-dark text-white shadow-lg border-secondary rounded-4 overflow-hidden transition-transform hover-scale">
+                    <div class="card-body text-center">
+                        <h5 class="card-title fw-bold">@user.UserName</h5>
+                        <p class="card-text text-secondary">@user.Email</p>
+                        <div class="d-flex justify-content-center gap-2">
+                            <a href="/Admin/User/Edit?userId=@user.Id" class="btn btn-info text-white btn-sm fw-bold">Edit</a>
+                            <a href="/Admin/User/Block?userId=@user.Id" class="btn btn-warning text-white btn-sm fw-bold">Block</a>
+                            <button class="btn btn-danger btn-sm fw-bold" onclick="confirmDelete(@user.Id)">Delete</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+
+    <nav>
+        <ul class="pagination justify-content-center">
+            @for (int i = 1; i <= ViewBag.totalPages; i++)
+            {
+                <li class="page-item @(i == ViewBag.currentPage ? "active" : "")">
+                    <a class="page-link bg-danger text-white border-0 fw-bold rounded-3 mx-1 px-3 py-2 shadow-sm" href="/Admin/User/Index?page=@i">@i</a>
+                </li>
+            }
+        </ul>
+    </nav>
+</div>
+
+@section Scripts {
+    <script>
+        function confirmDelete(userId) {
+            Swal.fire({
+                title: "Are you sure?",
+                text: "This action cannot be undone!",
+                icon: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#d33",
+                cancelButtonColor: "#6c757d",
+                confirmButtonText: "Yes, delete it!",
+                cancelButtonText: "Cancel"
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    window.location.href = "/Admin/User/Delete?userId=" + userId;
+                }
+            });
+        }
+    </script>
+
+    <style>
+        .hover-scale {
+            transition: transform 0.3s ease-in-out;
+        }
+
+            .hover-scale:hover {
+                transform: scale(1.05);
+            }
+    </style>
+}

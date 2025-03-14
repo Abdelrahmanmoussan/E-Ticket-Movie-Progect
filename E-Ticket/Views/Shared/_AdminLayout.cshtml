@@ -85,7 +85,23 @@
                 background: #333;
             }
 
-        /* Footer */
+        html, body {
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .main-content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        main {
+            flex-grow: 1;
+        }
+
+        /* Ensure footer stays at bottom */
         .footer {
             background: #181818;
             text-align: center;
@@ -93,6 +109,7 @@
             width: 100%;
             color: #bbb;
             font-size: 14px;
+            margin-top: auto; /* Pushes the footer to the bottom */
         }
     </style>
 </head>
@@ -103,9 +120,11 @@
         <h3 class="text-center text-white">🎬</h3>
         <a href="/Admin/Home/Index"><i class="fas fa-tachometer-alt"></i> <span>Dashboard</span></a>
         <a href="/Admin/MovieAdmin/Movie"><i class="fas fa-film"></i> <span>Movies</span></a>
-        <a href="/Admin/Users"><i class="fas fa-users"></i> <span>Users</span></a>
-        <a href="/Admin/ActorAdmin/ActorList"><i class="fas fa-Actors"></i>🎭 <span>Actors</span></a>
+        <a href="/Admin/User/Index"><i class="fas fa-users"></i> <span>Users</span></a>
+        <a href="/Admin/ActorAdmin/ActorList">🎭 <span>Actors</span></a>
         <a href="/Admin/CategoryAdmin/Category"><i class="fas fa-th-list"></i> <span>Categories</span></a>
+        <a href="/Admin/CinemaAdmin/Cinemas">🎬 <span>Cinemas</span></a>
+
         <a href="/Admin/Settings"><i class="fas fa-cogs"></i> <span>Settings</span></a>
     </div>
 
@@ -114,7 +133,7 @@
         <nav class="navbar navbar-expand-lg navbar-dark">
             <div class="container-fluid d-flex justify-content-between">
                 <a class="navbar-brand" href="#">Movie Hub Admin</a>
-                <a href="#" class="user-dropdown"><i class="fas fa-user-circle"></i> Admin</a>
+                <partial name="_LoginPartial" />
             </div>
         </nav>
 

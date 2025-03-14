@@ -15,16 +15,11 @@ namespace E_Ticket.Areas.Admin.Controllers
     public class CategoryAdminController : Controller
     {
 
-        private readonly IMovieRepository movieRepository;
-        private readonly IActorRepository actorRepository;
-        private readonly ICinemaRepository cinemaRepository;
+
         private readonly ICategoryRepository categoryRepository;
 
-        public CategoryAdminController(IMovieRepository movieRepository, IActorRepository actorRepository, ICinemaRepository cinemaRepository, ICategoryRepository categoryRepository)
+        public CategoryAdminController(ICategoryRepository categoryRepository)
         {
-            this.movieRepository = movieRepository;
-            this.actorRepository = actorRepository;
-            this.cinemaRepository = cinemaRepository;
             this.categoryRepository = categoryRepository;
         }
 

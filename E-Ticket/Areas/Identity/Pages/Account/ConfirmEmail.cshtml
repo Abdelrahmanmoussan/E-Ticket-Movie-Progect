@@ -1,8 +1,56 @@
 ﻿@page
 @model ConfirmEmailModel
 @{
-    ViewData["Title"] = "Confirm email";
+    ViewData["Title"] = "Confirm Email";
 }
 
-<h1>@ViewData["Title"]</h1>
-<partial name="_StatusMessage" model="Model.StatusMessage" />
+<style>
+    /* Dark Mode Styling */
+    body {
+        background: #121212;
+        color: #e0e0e0;
+        font-family: 'Arial', sans-serif;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+    }
+
+    .confirm-container {
+        background: #181818;
+        padding: 40px;
+        border-radius: 10px;
+        box-shadow: 0 0 15px rgba(255, 255, 255, 0.1);
+        max-width: 450px;
+        text-align: center;
+    }
+
+    h1 {
+        color: #ffffff;
+        font-weight: bold;
+        margin-bottom: 20px;
+    }
+
+    .status-message {
+        background: #333;
+        color: #e0e0e0;
+        padding: 15px;
+        border-radius: 6px;
+        margin-top: 10px;
+    }
+
+    a {
+        color: #e50914;
+        font-weight: bold;
+        text-decoration: none;
+    }
+
+        a:hover {
+            color: #b20710;
+        }
+</style>
+
+<div class="confirm-container">
+    <h1>Confirm Email</h1>
+    <partial name="_StatusMessage" model="Model.StatusMessage" />
+</div>

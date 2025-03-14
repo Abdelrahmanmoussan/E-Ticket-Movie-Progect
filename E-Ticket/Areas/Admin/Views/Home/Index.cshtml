@@ -1,31 +1,31 @@
 ﻿<div class="container mt-5">
     <h2 class="text-center text-white fw-bold">🎬 Admin Dashboard</h2>
-    <p class="text-center text-muted">Manage movies, users, categories, and more from here.</p>
+    <p class="text-center text-white">Manage movies, users, categories, and more from here.</p>
 
-    <div class="row g-4 mt-4">
-        <div class="col-md-6 col-lg-3">
+    <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-4 mt-4">
+        <div class="col">
             <div class="card bg-dark text-white shadow-lg border-0">
                 <div class="card-body text-center">
                     <h5 class="card-title"><i class="fas fa-film fa-2x mb-2"></i></h5>
                     <h5 class="fw-bold">Movies</h5>
-                    <p class="card-text">Manage all movie in the system.</p>
+                    <p class="card-text">Manage all movies in the system.</p>
                     <a asp-area="Admin" asp-controller="MovieAdmin" asp-action="Movie" class="btn btn-danger w-100">Go to Movies</a>
                 </div>
             </div>
         </div>
 
-        <div class="col-md-6 col-lg-3">
+        <div class="col">
             <div class="card bg-dark text-white shadow-lg border-0">
                 <div class="card-body text-center">
                     <h5 class="card-title"><i class="fas fa-users fa-2x mb-2"></i></h5>
                     <h5 class="fw-bold">Users</h5>
                     <p class="card-text">View and manage registered users.</p>
-                    <a href="/Admin/Users" class="btn btn-danger w-100">Go to Users</a>
+                    <a href="/Admin/User/Index" class="btn btn-danger w-100">Go to Users</a>
                 </div>
             </div>
         </div>
 
-        <div class="col-md-6 col-lg-3">
+        <div class="col">
             <div class="card bg-dark text-white shadow-lg border-0">
                 <div class="card-body text-center">
                     <h5 class="card-title"><i class="fas fa-theater-masks fa-2x mb-2"></i></h5>
@@ -36,13 +36,24 @@
             </div>
         </div>
 
-        <div class="col-md-6 col-lg-3">
+        <div class="col">
             <div class="card bg-dark text-white shadow-lg border-0">
                 <div class="card-body text-center">
                     <h5 class="card-title"><i class="fas fa-th-list fa-2x mb-2"></i></h5>
                     <h5 class="fw-bold">Categories</h5>
                     <p class="card-text">Organize movies into categories.</p>
                     <a asp-area="Admin" asp-controller="CategoryAdmin" asp-action="Category" class="btn btn-danger w-100">Go to Categories</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="col">
+            <div class="card bg-dark text-white shadow-lg border-0">
+                <div class="card-body text-center">
+                    <h5 class="card-title">🎬</h5>
+                    <h5 class="fw-bold">Cinemas</h5>
+                    <p class="card-text">Organize your cinemas.</p>
+                    <a asp-area="Admin" asp-controller="CinemaAdmin" asp-action="Cinemas" class="btn btn-danger w-100">Go to Cinemas</a>
                 </div>
             </div>
         </div>

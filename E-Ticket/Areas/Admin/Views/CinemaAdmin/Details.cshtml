@@ -1,0 +1,41 @@
+﻿@model E_Ticket.Models.Cinema
+
+@{
+    ViewData["Title"] = "Cinema Details";
+}
+
+<div class="container mt-5">
+    <div class="card bg-dark text-white shadow-lg p-4 rounded">
+        <h2 class="text-danger text-center fw-bold">Cinema Details</h2>
+        <hr class="bg-danger opacity-75" />
+
+        <div class="row align-items-center">
+            <div class="col-md-4 text-center">
+                <div class="bg-secondary rounded p-2 shadow">
+                    <img src="~/images/Cinema/@Model.CinemaLogo" alt="Cinema Logo" class="img-fluid rounded shadow-lg" style="max-height: 250px; object-fit: cover;" />
+                </div>
+            </div>
+            <div class="col-md-8">
+                <dl class="row">
+                    <dt class="col-sm-4 text-danger fw-bold">🎬 Name:</dt>
+                    <dd class="col-sm-8 fs-5">@Model.Name</dd>
+
+                    <dt class="col-sm-4 text-danger fw-bold">📝 Description:</dt>
+                    <dd class="col-sm-8 fs-5">@Model.Description</dd>
+
+                    <dt class="col-sm-4 text-danger fw-bold">📍 Address:</dt>
+                    <dd class="col-sm-8 fs-5">@Model.Address</dd>
+                </dl>
+            </div>
+        </div>
+
+        <div class="mt-4 text-center">
+            <a asp-action="Edit" asp-route-cinemaId="@Model.Id" class="btn btn-warning px-4 py-2 fw-bold mx-2">
+                ✏ Edit
+            </a>
+            <a asp-action="Cinemas" class="btn btn-outline-light px-4 py-2 fw-bold">
+                ⬅ Back to List
+            </a>
+        </div>
+    </div>
+</div>

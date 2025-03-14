@@ -2,48 +2,179 @@
 <html lang="en">
 <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewData["Title"] - E_Ticket</title>
-    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
-    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
-    <link rel="stylesheet" href="~/E_Ticket.styles.css" asp-append-version="true" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <meta name="description" content="Cinematic Experience" />
+    <meta name="author" content="Your Name" />
+    <title>Movie Hub - Watch & Explore</title>
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/x-icon" href="~/images/favicon.ico" />
+
+    <!-- Bootstrap & Font Awesome -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <!-- Custom Netflix-Style CSS -->
+    <style>
+        /* Global Styles */
+        body {
+            background-color: #141414;
+            color: white;
+            font-family: Arial, sans-serif;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        /* Navbar Styling */
+        .navbar {
+            padding: 15px 20px;
+            background-color: #111;
+        }
+
+        .navbar-brand img {
+            height: 50px;
+        }
+
+        .navbar-nav {
+            display: flex;
+            align-items: center;
+        }
+
+        .navbar-dark .navbar-nav .nav-link {
+            color: white;
+            font-weight: 500;
+            margin-left: 15px;
+            transition: color 0.3s ease-in-out;
+        }
+
+            .navbar-dark .navbar-nav .nav-link:hover {
+                color: red;
+            }
+
+        /* Login & Register Button Styles */
+        #login, #register {
+            background-color: #e50914; /* Netflix red */
+            color: white !important;
+            border: none;
+            border-radius: 5px;
+            padding: 6px 15px;
+            margin-left: 10px;
+            text-align: center;
+        }
+
+            #login:hover, #register:hover {
+                background-color: #b20710; /* Darker red */
+                text-decoration: none;
+            }
+
+        /* Logout Button */
+        #logout {
+            background-color: transparent;
+            color: white !important;
+            font-weight: bold;
+            border: none;
+            padding: 6px 15px;
+            margin-left: 10px;
+            transition: all 0.3s ease-in-out;
+        }
+
+            #logout:hover {
+                color: red !important;
+                text-decoration: none;
+            }
+
+        /* User Greeting */
+        #manage {
+            font-weight: bold;
+            color: white !important;
+            margin-right: 10px;
+        }
+
+        /* Main Content */
+        .container {
+            max-width: 1200px;
+            flex: 1;
+        }
+
+        /* Sticky Footer */
+        .footer {
+            background: #181818;
+            padding: 20px 0;
+            text-align: center;
+            width: 100%;
+            position: relative;
+            bottom: 0;
+        }
+
+            .footer p {
+                color: white;
+                font-size: 14px;
+            }
+
+            .footer .social-icons {
+                margin-top: 10px;
+            }
+
+                .footer .social-icons a {
+                    color: white;
+                    font-size: 20px;
+                    margin: 0 10px;
+                    transition: color 0.3s ease-in-out;
+                }
+
+                    .footer .social-icons a:hover {
+                        color: red;
+                    }
+
+    </style>
 </head>
 <body>
-    <header>
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
-            <div class="container-fluid">
-                <a class="navbar-brand" asp-area="Customers" asp-controller="Movies" asp-action="Index">E_Ticket</a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
-                        aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
-                    <ul class="navbar-nav flex-grow-1">
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="Customers" asp-controller="Index" asp-action="Index">Home</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
-                        </li>
-                    </ul>
-                </div>
+
+    <!-- Netflix-Style Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div class="container">
+            <a class="navbar-brand" href="/">
+                <img src="~/images/logo.png" alt="Movie Hub Logo">
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item"><a class="nav-link active" href="/">Movies</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/Customers/Movies/Category">Categories</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/Customers/Movies/Cinema">Cinemas</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/Admin/Home/Index">Managemenet System</a></li>
+
+                </ul>
+                <partial name="_LoginPartial" class="navbar-nav ms-auto">
             </div>
-        </nav>
-    </header>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
     <div class="container">
         <main role="main" class="pb-3">
             @RenderBody()
         </main>
     </div>
 
-    <footer class="border-top footer text-muted">
+    <!-- Footer -->
+    <footer class="footer">
         <div class="container">
-            &copy; 2025 - E_Ticket - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+            <p>&copy; 2024 Movie Hub. All Rights Reserved.</p>
+            <div class="social-icons">
+                <a href="#"><i class="fab fa-facebook"></i></a>
+                <a href="#"><i class="fab fa-twitter"></i></a>
+                <a href="#"><i class="fab fa-instagram"></i></a>
+            </div>
         </div>
     </footer>
-    <script src="~/lib/jquery/dist/jquery.min.js"></script>
-    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="~/js/site.js" asp-append-version="true"></script>
-    @await RenderSectionAsync("Scripts", required: false)
+
+    <!-- Bootstrap JavaScript -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    @RenderSection("Scripts", required: false)
+
 </body>
 </html>

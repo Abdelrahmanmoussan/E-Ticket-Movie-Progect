@@ -1,0 +1,105 @@
+﻿@model IEnumerable<E_Ticket.Models.Cinema>
+
+@{
+    ViewData["Title"] = "Cinemas";
+}
+
+<div class="container mt-5">
+    <h2 class="text-danger text-center fw-bold">🎬 Available Cinemas</h2>
+    <hr class="bg-danger opacity-75" />
+
+    <div class="text-center mb-4">
+        <a asp-action="Create" class="btn btn-danger px-4 py-2 fw-bold shadow-lg">
+            ➕ Add New Cinema
+        </a>
+    </div>
+
+    <div class="row row-cols-1 row-cols-md-3 g-4">
+        @foreach (var item in Model)
+        {
+            <div class="col">
+                <div class="card bg-dark text-white shadow-lg border-0 h-100">
+                    <div class="position-relative">
+                        <img src="~/images/Cinema/@item.CinemaLogo" class="card-img-top rounded-top"
+                             alt="@item.Name" style="height: 250px; object-fit: cover;">
+                        <div class="position-absolute top-0 start-0 bg-danger text-white px-3 py-1 fw-bold"
+                             style="border-bottom-right-radius: 10px;">
+                            🎥 NOW SHOWING
+                        </div>
+                    </div>
+                    <div class="card-body text-center">
+                        <h5 class="card-title text-danger fw-bold">@item.Name</h5>
+                        <p class="card-text">@item.Description</p>
+                        <p class="card-text text-white fw-bold">📍 @item.Address</p>
+                    </div>
+                    <div class="card-footer bg-transparent border-0">
+                        <div class="d-flex flex-wrap justify-content-center gap-2">
+                            <a asp-action="Details" asp-route-cinemaId="@item.Id" class="btn btn-outline-light btn-sm fw-bold">
+                                🔍 View
+                            </a>
+                            <a asp-action="Edit" asp-route-cinemaId="@item.Id" class="btn btn-warning btn-sm fw-bold">
+                                ✏ Edit
+                            </a>
+                            <form method="POST" action="/Admin/CinemaAdmin/Delete" class="d-inline">
+                                @Html.AntiForgeryToken()
+                                <input type="hidden" name="cinemaId" value="@item.Id" />
+                                <button type="button" class="btn btn-danger btn-sm fw-bold" onclick="confirmDelete(@item.Id)">
+                                    🗑 Delete
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</div>
+
+
+
+<script>
+    function confirmDelete(cinemaId) {
+        console.log("Delete function called for cinema ID:", cinemaId); // Debugging log
+
+        Swal.fire({
+            title: "Are you sure?",
+            text: "This action cannot be undone!",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#d33",
+            cancelButtonColor: "#6c757d",
+            confirmButtonText: "Yes, delete it!",
+            cancelButtonText: "Cancel"
+        }).then((result) => {
+            if (result.isConfirmed) {
+                console.log("Confirmed delete for:", cinemaId); // Debugging log
+
+                // Find the CSRF token from the page
+                let csrfToken = document.querySelector('input[name="__RequestVerificationToken"]').value;
+
+                // Create a form dynamically to send a POST request
+                let form = document.createElement("form");
+                form.method = "POST";
+                form.action = "/Admin/cinemaAdmin/Delete";  // Make sure this matches your route
+
+                // Add CSRF token to the form
+                let csrfInput = document.createElement("input");
+                csrfInput.type = "hidden";
+                csrfInput.name = "__RequestVerificationToken";
+                csrfInput.value = csrfToken;
+                form.appendChild(csrfInput);
+
+                // Add cinema ID to the form
+                let idInput = document.createElement("input");
+                idInput.type = "hidden";
+                idInput.name = "cinemaId";
+                idInput.value = cinemaId;
+                form.appendChild(idInput);
+
+                document.body.appendChild(form);
+                form.submit();
+            }
+        });
+    }
+
+</script>

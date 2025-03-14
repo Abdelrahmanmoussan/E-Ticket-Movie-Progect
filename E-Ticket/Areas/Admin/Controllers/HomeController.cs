@@ -1,10 +1,13 @@
 using System.Diagnostics;
 using E_Ticket.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace E_Ticket.Controllers
 {
         [Area("Admin")]
+    [Authorize(Roles = "Admin,SuperAdmin,Company")]
+
     public class HomeController : Controller
     {
 

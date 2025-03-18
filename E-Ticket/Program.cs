@@ -30,12 +30,6 @@ namespace E_Ticket
             .AddDefaultTokenProviders();
 
 
-
-
-
-
-
-
             builder.Services.AddScoped<RoleManager<IdentityRole>>();
             builder.Services.AddTransient<IEmailSender, EmailSender>();
 
@@ -44,6 +38,18 @@ namespace E_Ticket
             builder.Services.AddScoped<ICinemaRepository, CinemaRepository>();
             builder.Services.AddScoped<ICategoryRepository, CategoryRepository>();
             builder.Services.AddScoped<IApplicationUserRepository, ApplicationUserRepository>();
+
+            builder.Services.AddAuthentication().AddGoogle(googleOptions =>
+            {
+                googleOptions.ClientId = builder.Configuration["Authentication:Google:ClientId"];
+                googleOptions.ClientSecret = builder.Configuration["Authentication:Google:ClientSecret"];
+            });
+
+            builder.Services.AddAuthentication().AddFacebook(facebookOptions =>
+            {
+                facebookOptions.AppId = builder.Configuration["Authentication:Facebook:AppId"];
+                facebookOptions.AppSecret = builder.Configuration["Authentication:Facebook:AppSecret"];
+            });
 
             var app = builder.Build();
 

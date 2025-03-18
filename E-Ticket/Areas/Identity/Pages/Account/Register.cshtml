@@ -20,18 +20,8 @@
         max-width: 450px;
         margin: auto;
         margin-top: 50px;
+        text-align: center;
     }
-
-        .register-container h2 {
-            color: #ffffff;
-            text-align: center;
-            font-weight: bold;
-        }
-
-        .register-container p {
-            text-align: center;
-            color: #bbb;
-        }
 
     .form-control {
         background: #333;
@@ -44,10 +34,6 @@
             border-color: #e50914;
             box-shadow: none;
         }
-
-    label {
-        color: #e0e0e0;
-    }
 
     .btn-primary {
         background: #e50914;
@@ -62,13 +48,37 @@
             background: #b20710;
         }
 
-    a {
-        color: #e50914;
+    .social-login {
+        display: flex;
+        justify-content: center;
+        gap: 15px;
+        margin-top: 20px;
     }
 
-        a:hover {
-            color: #b20710;
+        .social-login a {
+            font-size: 24px;
+            color: #e0e0e0;
+            text-decoration: none;
+            padding: 10px;
+            border-radius: 50%;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 50px;
+            height: 50px;
         }
+
+    .facebook {
+        background: #3b5998;
+    }
+
+    .google {
+        background: #db4437;
+    }
+
+    .social-login a:hover {
+        opacity: 0.8;
+    }
 </style>
 
 <div class="register-container">
@@ -78,6 +88,18 @@
 
     <form id="registerForm" asp-route-returnUrl="@Model.ReturnUrl" method="post">
         <div asp-validation-summary="ModelOnly" class="text-danger" role="alert"></div>
+
+        <div class="form-floating mb-3">
+            <input asp-for="Input.FName" class="form-control" autocomplete="username" placeholder="First Name" />
+            <label asp-for="Input.FName">First Name</label>
+            <span asp-validation-for="Input.FName" class="text-danger"></span>
+        </div>
+
+        <div class="form-floating mb-3">
+            <input asp-for="Input.LName" class="form-control" autocomplete="username" placeholder="Last Name" />
+            <label asp-for="Input.LName">Last Name</label>
+            <span asp-validation-for="Input.LName" class="text-danger"></span>
+        </div>
 
         <div class="form-floating mb-3">
             <input asp-for="Input.Email" class="form-control" autocomplete="username" placeholder="Email" />
@@ -97,26 +119,39 @@
             <span asp-validation-for="Input.ConfirmPassword" class="text-danger"></span>
         </div>
 
-        <div class="form-floating mb-3">
-            <input asp-for="Input.Address" class="form-control" autocomplete="address" placeholder="Address" />
-            <label asp-for="Input.Address">Address</label>
-            <span asp-validation-for="Input.Address" class="text-danger"></span>
-        </div>
-
-        <div class="form-floating mb-3">
-            <input asp-for="Input.Age" class="form-control" autocomplete="age" placeholder="Age" />
-            <label asp-for="Input.Age">Age</label>
-            <span asp-validation-for="Input.Age" class="text-danger"></span>
-        </div>
-
         <button id="registerSubmit" type="submit" class="btn btn-primary">Sign Up</button>
     </form>
 
     <div class="text-center mt-3">
         <p>Already have an account? <a asp-page="./Login">Login</a></p>
     </div>
+
+    @if (Model.ExternalLogins?.Count > 0)
+    {
+        <div class="social-login">
+            @foreach (var provider in Model.ExternalLogins!)
+            {
+                if (provider.Name == "Facebook")
+                {
+                    <a href="#" class="facebook" onclick="document.getElementById('facebook-login').submit();">
+                        <i class="fab fa-facebook-f"></i>
+                    </a>
+                }
+                else if (provider.Name == "Google")
+                {
+                    <a href="#" class="google" onclick="document.getElementById('google-login').submit();">
+                        <i class="fab fa-google"></i>
+                    </a>
+                }
+                <form id="@provider.Name.ToLower()-login" asp-page="./ExternalLogin" asp-route-returnUrl="@Model.ReturnUrl" method="post">
+                    <input type="hidden" name="provider" value="@provider.Name" />
+                </form>
+            }
+        </div>
+    }
 </div>
 
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />
+    <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
 }

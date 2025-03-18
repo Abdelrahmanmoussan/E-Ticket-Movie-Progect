@@ -4,25 +4,30 @@
     ViewData["Title"] = "Confirm Email";
 }
 
+<div class="confirm-container">
+    <h1>@ViewData["Title"]</h1>
+    <div class="status-message">
+        <partial name="_StatusMessage" model="Model.StatusMessage" />
+    </div>
+</div>
+
 <style>
     /* Dark Mode Styling */
     body {
         background: #121212;
         color: #e0e0e0;
         font-family: 'Arial', sans-serif;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        height: 100vh;
+
     }
 
     .confirm-container {
         background: #181818;
         padding: 40px;
         border-radius: 10px;
-        box-shadow: 0 0 15px rgba(255, 255, 255, 0.1);
-        max-width: 450px;
-        text-align: center;
+        box-shadow: 0 0 20px rgba(255, 255, 255, 0.15);
+        max-width: 600px;
+        margin: auto;
+        margin-top: 50px; /* Space from the header */
     }
 
     h1 {
@@ -32,11 +37,11 @@
     }
 
     .status-message {
-        background: #333;
+        background: #252525; /* Darker background to match theme */
         color: #e0e0e0;
         padding: 15px;
         border-radius: 6px;
-        margin-top: 10px;
+        margin-top: 15px;
     }
 
     a {
@@ -49,8 +54,3 @@
             color: #b20710;
         }
 </style>
-
-<div class="confirm-container">
-    <h1>Confirm Email</h1>
-    <partial name="_StatusMessage" model="Model.StatusMessage" />
-</div>

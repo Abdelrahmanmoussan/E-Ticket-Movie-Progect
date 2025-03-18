@@ -60,6 +60,7 @@ namespace E_Ticket.Areas.Identity.Pages.Account.Manage
             [Display(Name = "Phone number")]
             public string PhoneNumber { get; set; }
             public int Age { get;  set; }
+            public string Address { get;  set; }
         }
 
         private async Task LoadAsync(ApplicationUser user)
@@ -72,6 +73,7 @@ namespace E_Ticket.Areas.Identity.Pages.Account.Manage
             Input = new InputModel
             {
                 PhoneNumber = phoneNumber,
+                Address = user.Address,
                 Age = user.Age
             };
         }
@@ -110,6 +112,22 @@ namespace E_Ticket.Areas.Identity.Pages.Account.Manage
                 {
                     StatusMessage = "Unexpected error when trying to set phone number.";
                     return RedirectToPage();
+                }
+            }
+            if (user is ApplicationUser appUser)
+            {
+                if (appUser.Address != Input.Address)
+                {
+                    appUser.Address = Input.Address;
+                    await _userManager.UpdateAsync(appUser);
+                }
+            }
+            if (user is ApplicationUser appUserAge)
+            {
+                if (appUserAge.Age != Input.Age)
+                {
+                    appUserAge.Age = Input.Age;
+                    await _userManager.UpdateAsync(appUserAge);
                 }
             }
 

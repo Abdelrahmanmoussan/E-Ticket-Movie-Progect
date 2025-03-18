@@ -1,23 +1,58 @@
 ﻿@page
 @model RegisterConfirmationModel
 @{
-    ViewData["Title"] = "Register confirmation";
+    ViewData["Title"] = "Register Confirmation";
 }
 
-<h1>@ViewData["Title"]</h1>
-@{
-    if (@Model.DisplayConfirmAccountLink)
+<style>
+    body {
+        background: #121212;
+        color: #e0e0e0;
+        font-family: 'Arial', sans-serif;
+        text-align: center;
+    }
+
+    .confirmation-container {
+        background: #181818;
+        padding: 40px;
+        border-radius: 10px;
+        box-shadow: 0 0 20px rgba(255, 255, 255, 0.15);
+        max-width: 600px;
+        margin: auto;
+        margin-top: 50px; /* Space from the header */
+    }
+
+    h1 {
+        color: #ffffff;
+        font-weight: bold;
+    }
+
+    p {
+        color: #bbb;
+    }
+
+    a {
+        color: #e50914;
+        text-decoration: none;
+        font-weight: bold;
+    }
+
+        a:hover {
+            color: #b20710;
+        }
+</style>
+
+<div class="confirmation-container">
+    <h1>@ViewData["Title"]</h1>
+    @if (@Model.DisplayConfirmAccountLink)
     {
-<p>
-    This app does not currently have a real email sender registered, see <a href="https://aka.ms/aspaccountconf">these docs</a> for how to configure a real email sender.
-    Normally this would be emailed: <a id="confirm-link" href="@Model.EmailConfirmationUrl">Click here to confirm your account</a>
-</p>
+        <p>
+            This app does not currently have a real email sender registered. See <a href="https://aka.ms/aspaccountconf">these docs</a> for how to configure a real email sender.
+            Normally, this would be emailed: <a id="confirm-link" href="@Model.EmailConfirmationUrl">Click here to confirm your account</a>
+        </p>
     }
     else
     {
-<p>
-        Please check your email to confirm your account.
-</p>
+        <p>Please check your email to confirm your account.</p>
     }
-}
-
+</div>

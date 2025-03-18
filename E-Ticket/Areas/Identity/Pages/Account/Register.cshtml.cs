@@ -104,9 +104,10 @@ namespace E_Ticket.Areas.Identity.Pages.Account
             [Display(Name = "Confirm password")]
             [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
             public string ConfirmPassword { get; set; }
-
-            public string? Address { get; set; }
-            public int Age { get; set; }
+            public string FName { get; set; }
+            public string LName { get; set; }
+            //public string Address { get; set; }
+            //public int Age { get; set; }
         }
 
 
@@ -136,8 +137,8 @@ namespace E_Ticket.Areas.Identity.Pages.Account
                 await _userStore.SetUserNameAsync(user, Input.Email, CancellationToken.None);
                 await _emailStore.SetEmailAsync(user, Input.Email, CancellationToken.None);
 
-                  user.Address =  Input.Address;
-                  user.Age = Input.Age;
+                  user.FName =  Input.FName;
+                  user.LName = Input.LName;
 
                 var result = await _userManager.CreateAsync(user, Input.Password);
 

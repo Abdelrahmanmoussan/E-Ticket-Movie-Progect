@@ -1,0 +1,91 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Page Not Found - Netflix</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+    <style>
+        body {
+            background-color: #141414;
+            color: #fff;
+            font-family: Arial, sans-serif;
+            text-align: center;
+        }
+
+        .error-container {
+            padding: 100px 20px;
+        }
+
+        .glitch-container {
+            position: relative;
+            display: inline-block;
+            font-size: 120px;
+            font-weight: bold;
+            color: #e50914;
+            text-shadow: 3px 3px 0 #000;
+        }
+
+        .glitch-clone {
+            position: absolute;
+            top: 0;
+            left: 0;
+            opacity: 0.8;
+        }
+
+        .glitch-white {
+            color: #fff;
+            left: -3px;
+        }
+
+        .glitch-red {
+            color: #e50914;
+            left: 3px;
+        }
+
+        .btn-netflix {
+            background-color: #e50914;
+            color: white;
+            padding: 10px 20px;
+            font-size: 18px;
+            border-radius: 5px;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+
+            .btn-netflix:hover {
+                background-color: #ff0a16;
+                color: white;
+            }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <div class="error-container">
+            <div class="glitch-container">
+                <span class="glitch-clone glitch-white">404</span>
+                <span class="glitch-clone glitch-red">404</span>
+                <span class="glitch-main">404</span>
+            </div>
+            <h2 class="mt-3">Oops! We lost this page.</h2>
+            <p class="mb-4">Sorry, the page you're looking for cannot be found.</p>
+            <a href="Index" class="btn-netflix"><i class="fas fa-home"></i> Back to Home</a>
+        </div>
+    </div>
+
+    <script>
+        function glitchEffect() {
+            const clones = document.querySelectorAll(".glitch-clone");
+            clones.forEach(clone => {
+                const randomX = Math.floor(Math.random() * 6) - 3; // Random from -3 to 3
+                const randomY = Math.floor(Math.random() * 6) - 3;
+                clone.style.transform = `translate(${randomX}px, ${randomY}px)`;
+            });
+        }
+        setInterval(glitchEffect, 200);
+    </script>
+
+</body>
+</html>

@@ -1,16 +1,19 @@
 ﻿using E_Ticket.Models;
+using E_Ticket.Models.E_Ticket.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
 namespace E_Ticket.DataAccess
 {
-    public class ApplicationDbContext : IdentityDbContext
+    public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
     {
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
-            : base(options)
+        : base(options)
         {
         }
+
+
 
         public DbSet<Movie> Movies { get; set; }
         public DbSet<Cinema> Cinemas { get; set; }
@@ -18,6 +21,10 @@ namespace E_Ticket.DataAccess
         public DbSet<Category> Categories { get; set; }
         public DbSet<ActorMovies> ActorMovies { get; set; }
         public DbSet<ApplicationUser> ApplicationUsers { get; set; }
+        public DbSet<Cart> Carts { get; set; }
+        public DbSet<Order> Orders { get; set; }
+        public DbSet<OrderItem> OrderItems { get; set; }
+        public DbSet<FavItems> FavItems { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

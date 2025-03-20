@@ -5,6 +5,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using TestIdentity.Utility;
+using E_Ticket.Models;
 
 namespace E_Ticket
 {
@@ -22,7 +23,7 @@ namespace E_Ticket
                 options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
             
-            builder.Services.AddIdentity<IdentityUser, IdentityRole>(options =>
+            builder.Services.AddIdentity<ApplicationUser, IdentityRole>(options =>
             {
                 options.SignIn.RequireConfirmedAccount = true;
             })
@@ -38,6 +39,10 @@ namespace E_Ticket
             builder.Services.AddScoped<ICinemaRepository, CinemaRepository>();
             builder.Services.AddScoped<ICategoryRepository, CategoryRepository>();
             builder.Services.AddScoped<IApplicationUserRepository, ApplicationUserRepository>();
+            builder.Services.AddScoped<ICartRepository, CartRepository>();
+            builder.Services.AddScoped<IOrderRepository, OrderRepository>();
+            builder.Services.AddScoped<IOrderItemRepository, OrderItemRepository>();
+            builder.Services.AddScoped<IFavItemRepository, FavItemRepository>();
 
             builder.Services.AddAuthentication().AddGoogle(googleOptions =>
             {

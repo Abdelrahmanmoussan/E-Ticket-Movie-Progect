@@ -3,10 +3,13 @@ using E_Ticket.Repositories.IRepositories;
 using E_Ticket.Repositories;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Authorization;
+using Stripe.Checkout;
 
 namespace E_Ticket.Areas.Customers.Controllers
 {
         [Area("Customers")]
+        [Authorize]
     public class CartController : Controller
     {
 
@@ -22,6 +25,18 @@ namespace E_Ticket.Areas.Customers.Controllers
             _orderItemRepository = orderItemRepository;
         }
 
+    public ActionResult Index()
+    {
+        var cart = _cartRepository.Get(e=>e.ApplicationUserId == _userManager.GetUserId(User), includes: [e=>e.Movie, e=>e.ApplicationUser]);
+            if( cart == null)
+            {
+                RedirectToAction("NotFoundPage");
+            }
+            var totalPrice = cart.Sum(e=>e.Movie.Price *e.Count);
+
+            ViewBag.TotalPrice = totalPrice;
+        return View(cart);      
+    }
         public ActionResult AddToCart(int MovieId, int count)
         {
             var user = _userManager.GetUserId(User);
@@ -45,16 +60,106 @@ namespace E_Ticket.Areas.Customers.Controllers
 
         }
 
-    public ActionResult Index()
-    {
-        var cart = _cartRepository.Get();
-            if( cart == null)
+        public IActionResult Increment(int MovieId)
+        {
+            var cart = _cartRepository.GetOne(e => e.ApplicationUserId == _userManager.GetUserId(User) && e.MovieId == MovieId);
+
+            if (cart != null)
             {
-                RedirectToAction("NotFoundPage");
+                cart.Count++;
+                _cartRepository.Commit();
             }
-        return View(cart);
-            
-    }
+
+            return RedirectToAction(nameof(Index));
+        }
+
+        public IActionResult Decrement(int MovieId)
+        {
+            var cart = _cartRepository.GetOne(e => e.ApplicationUserId == _userManager.GetUserId(User) && e.MovieId == MovieId);
+            if (cart != null && cart.Count >1)
+            {
+                cart.Count--;
+                _cartRepository.Commit();
+            }
+            return RedirectToAction(nameof(Index));
+        }
+
+
+
+        public IActionResult Pay()
+        {
+            var userId = _userManager.GetUserId(User);
+            var cart = _cartRepository.Get(e => e.ApplicationUserId == userId, includes: [e => e.Movie, e => e.ApplicationUser]);
+
+            var order = new Order();
+            order.ApplicationUserId = userId;
+            order.OrderDate = DateTime.Now;
+            order.OrderTotal = (double)cart.Sum(e => e.Movie.Price * e.Count);
+
+            _orderRepository.Create(order);
+            _orderRepository.Commit();
+
+            var options = new SessionCreateOptions
+            {
+                PaymentMethodTypes = new List<string> { "card" },
+                LineItems = new List<SessionLineItemOptions>(),
+                Mode = "payment",
+                SuccessUrl = $"{Request.Scheme}://{Request.Host}/Customers/Checkout/Success?orderId={order.Id}",
+                CancelUrl = $"{Request.Scheme}://{Request.Host}/Customers/Checkout/Cancel",
+            };
+
+            foreach (var item in cart)
+            {
+                options.LineItems.Add(
+                    new SessionLineItemOptions
+                    {
+                        PriceData = new SessionLineItemPriceDataOptions
+                        {
+                            Currency = "egp",
+                            ProductData = new SessionLineItemPriceDataProductDataOptions
+                            {
+                                Name = item.Movie.Name,
+                                Description = item.Movie.Description,
+                            },
+                            UnitAmount = (long)item.Movie.Price * 100 ,
+                        },
+                        Quantity = item.Count,
+                    }
+                );
+            }
+
+            var service = new SessionService();
+            var session = service.Create(options);
+            order.SessionId = session.Id;
+            _orderRepository.Commit();
+
+            List<OrderItem> orderItems = [];
+            foreach (var item in cart)
+            {
+                var orderItem = new OrderItem()
+                {
+                    OrderId = order.Id,
+                    Count = item.Count,
+                    Price = (double)item.Movie.Price,
+                    MovieId = item.MovieId,
+                };
+
+                orderItems.Add(orderItem);
+            }
+            _orderItemRepository.CreateRange(orderItems);
+            _orderRepository.Commit();
+
+            return Redirect(session.Url);
+
+        }
+
+
+
+
+
+
+
+
         public IActionResult NotFoundPage()
         {
             return View();

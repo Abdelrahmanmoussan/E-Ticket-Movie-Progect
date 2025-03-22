@@ -1,0 +1,51 @@
+﻿<div class="container d-flex flex-column align-items-center justify-content-center vh-100 text-center">
+    <div class="card shadow-lg p-4 bg-dark text-white border-0">
+        <div class="card-body">
+            <i class="bi bi-check-circle-fill text-success display-3 mb-3"></i>
+            <h1 class="mt-3 fw-bold text-white">Payment Successful!</h1>
+            <p class="lead text-white">Thank you for your purchase. Your transaction has been completed successfully.</p>
+            <a asp-area="Customers" asp-controller="Movies" asp-action="Index" class="btn btn-danger mt-3 px-4 py-2 fw-bold">
+                <i class="bi bi-house-door-fill"></i> Return to Homepage
+            </a>
+        </div>
+    </div>
+</div>
+
+<style>
+    body {
+        background-color: #141414; /* Netflix dark background */
+        color: white;
+        font-family: 'Arial', sans-serif;
+    }
+
+    .card {
+        background: #222;
+        border-radius: 10px;
+        text-align: center;
+        width: 400px;
+    }
+
+    .btn-danger {
+        background-color: #e50914;
+        border: none;
+        transition: 0.3s ease-in-out;
+        color: white;
+    }
+
+        .btn-danger:hover {
+            background-color: #b20710;
+            color: white;
+        }
+
+    .bi-check-circle-fill {
+        font-size: 4rem;
+        animation: pop 0.5s ease-in-out;
+    }
+
+
+
+    /* Ensuring all text remains white */
+    h1, p, .lead {
+        color: white !important;
+    }
+</style>

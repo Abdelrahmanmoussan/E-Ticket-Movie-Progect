@@ -6,6 +6,8 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using TestIdentity.Utility;
 using E_Ticket.Models;
+using E_Ticket.Utility;
+using Stripe;
 
 namespace E_Ticket
 {
@@ -43,6 +45,9 @@ namespace E_Ticket
             builder.Services.AddScoped<IOrderRepository, OrderRepository>();
             builder.Services.AddScoped<IOrderItemRepository, OrderItemRepository>();
             builder.Services.AddScoped<IFavItemRepository, FavItemRepository>();
+
+            builder.Services.Configure<StripeSettings>(builder.Configuration.GetSection("Stripe"));
+            StripeConfiguration.ApiKey = builder.Configuration["Stripe:SecretKey"];
 
             builder.Services.AddAuthentication().AddGoogle(googleOptions =>
             {

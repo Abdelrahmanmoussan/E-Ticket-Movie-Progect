@@ -28,9 +28,9 @@ namespace E_Ticket.Areas.Customers.Controllers
     public ActionResult Index()
     {
         var cart = _cartRepository.Get(e=>e.ApplicationUserId == _userManager.GetUserId(User), includes: [e=>e.Movie, e=>e.ApplicationUser]);
-            if( cart == null)
+            if(!cart.Any())
             {
-                RedirectToAction("NotFoundPage");
+                ViewBag.Message = "Your cart is empty.";
             }
             var totalPrice = cart.Sum(e=>e.Movie.Price *e.Count);
 
@@ -155,7 +155,21 @@ namespace E_Ticket.Areas.Customers.Controllers
 
 
 
+        public IActionResult Delete(int MovieId)
+        {
+            var user = _userManager.GetUserId(User);
+            var cart = _cartRepository.GetOne(e => e.ApplicationUserId == user && e.MovieId == MovieId);
 
+            if (cart != null && user != null)
+            {
+
+                _cartRepository.Delete(cart);
+                _cartRepository.Commit();
+                return RedirectToAction("Index");
+            }
+            return RedirectToAction("NotFoundPage");
+
+        }
 
 
 

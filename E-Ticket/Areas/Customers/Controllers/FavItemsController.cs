@@ -2,12 +2,16 @@
 using E_Ticket.Models.E_Ticket.Models;
 using E_Ticket.Repositories;
 using E_Ticket.Repositories.IRepositories;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+
 
 namespace E_Ticket.Areas.Customers.Controllers
 {
         [Area("Customers")]
+        [Authorize]
+
     public class FavItemsController : Controller
     {
         private IMovieRepository _movieRepository;
@@ -19,7 +23,7 @@ namespace E_Ticket.Areas.Customers.Controllers
         
 
 
-        public FavItemsController(IMovieRepository movieRepository, IActorRepository actorRepository, ICinemaRepository cinemaRepository, ICategoryRepository categoryRepository, UserManager<ApplicationUser> userManager, FavItemRepository favItemRepository)
+        public FavItemsController(IMovieRepository movieRepository, IActorRepository actorRepository, ICinemaRepository cinemaRepository, ICategoryRepository categoryRepository, UserManager<ApplicationUser> userManager, IFavItemRepository favItemRepository)
         {
             _movieRepository = movieRepository;
             _actorRepository = actorRepository;
@@ -34,24 +38,34 @@ namespace E_Ticket.Areas.Customers.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
+
         public ActionResult AddToFav(int MovieId)
         {
+
             var user = _userManager.GetUserId(User);
-            if (string.IsNullOrEmpty(user))
+            if (user != null)
             {
-                return RedirectToAction("Login", "Account"); // Redirect to login if not authenticated
+
+                var existingFav = _favItemRepository.Get(e => e.ApplicationUserId == user && e.MovieId == MovieId).FirstOrDefault();
+
+                if (existingFav != null)
+                {
+                    // Movie is already in favorites, redirect to Index page
+                    return RedirectToAction("Index", "Movies", new { area = "Customers" });
+                }
+
+                var fav = new FavItems()
+                {
+                    MovieId = MovieId,
+                    ApplicationUserId = user
+                };
+
+                _favItemRepository.Create(fav);
+                _favItemRepository.Commit();
+
+            return RedirectToAction("FavList");
             }
-
-            var fav = new FavItems()
-            {
-                MovieId = MovieId,
-                ApplicationUserId = user
-            };
-
-            _favItemRepository.Create(fav);
-            _favItemRepository.Commit();
-
-            return RedirectToAction("Index", "Movies", new { area = "Customers" });
+                return RedirectToAction("Index", "Movies", new { area = "Customers" });
         }
 
 
@@ -62,10 +76,27 @@ namespace E_Ticket.Areas.Customers.Controllers
 
             if (!favMovies.Any())
             {
-                return RedirectToAction("NotFoundPage");
+                ViewBag.Message = "Your favorite list is empty.";
             }
 
             return View(favMovies);
+        }
+
+
+        public IActionResult Delete(int MovieId)
+        {
+            var user = _userManager.GetUserId(User);
+            var favMovies = _favItemRepository.GetOne(e => e.ApplicationUserId == user && e.MovieId == MovieId);
+
+            if(favMovies != null && user!= null)
+            {
+
+            _favItemRepository.Delete(favMovies);
+            _favItemRepository.Commit();
+            return RedirectToAction("FavList");
+            }
+            return RedirectToAction("NotFoundPage");
+
         }
 
         public IActionResult NotFoundPage()

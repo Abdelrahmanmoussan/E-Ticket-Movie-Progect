@@ -57,39 +57,48 @@
 
 
             <!-- Action Buttons -->
-            <div class="mt-3">
-                <a href="@Model.TrailerUrl" class="btn btn-danger btn-lg">
-                    <i class="bi bi-play-fill"></i> Watch Trailer
+            <!-- Action Buttons -->
+            <div class="mt-4 d-flex flex-wrap align-items-center gap-3">
+                <!-- Watch Trailer Button -->
+                <a href="@Model.TrailerUrl" class="btn btn-danger btn-lg d-flex align-items-center px-4">
+                    <i class="bi bi-play-fill me-2"></i> Watch Trailer
                 </a>
+
                 @if (Model.EndDate >= DateOnly.FromDateTime(DateTime.Now))
                 {
-                    <form action="/Customers/Cart/AddToCart">
+                    <form action="/Customers/Cart/AddToCart" class="d-flex align-items-center gap-2">
                         <input type="hidden" name="movieId" value="@Model.Id" />
-                         <input class="form-control text-center me-3" id="inputQuantity" type="number" name="count" value="1" style="max-width: 3rem" /> 
-                       <button type="submit" href="#" class="btn btn-outline-light btn-lg">
-                        <i class="bi bi-ticket"></i> Book Ticket
-                    </button>
+
+                        <!-- Quantity Selector -->
+                        @* <div class="input-group d-flex align-items-center" style="max-width: 120px;"> *@
+                        @*     <button type="button" class="btn btn-outline-light btn-sm px-3" onclick="decreaseQuantity()">−</button> *@
+                        @*     <input class="form-control text-center bg-dark text-white border-light fw-bold" *@
+                        @*            id="inputQuantity" type="number" name="count" value="1" min="1" *@
+                        @*            style="max-width: 45px; height: 32px; font-size: 1rem;"> *@
+                        @*     <button type="button" class="btn btn-outline-light btn-sm px-3" onclick="increaseQuantity()">+</button> *@
+                        @* </div> *@
+                        <div class="quantity-group">
+                            <button type="button" onclick="increaseQuantity()">+</button>
+                            <input id="inputQuantity" type="number" name="count" value="1" min="1" readonly>
+                            <button type="button" onclick="decreaseQuantity()">−</button>
+                        </div>
+
+                        <!-- Book Ticket Button -->
+                        <button type="submit" class="btn btn-success btn-lg d-flex align-items-center px-4">
+                            <i class="bi bi-ticket me-2"></i> Book Ticket
+                        </button>
                     </form>
                 }
                 else
                 {
-                    <button class="btn btn-outline-secondary btn-lg" disabled>
-                        <i class="bi bi-x-circle"></i> Booking Closed
+                    <button class="btn btn-outline-secondary btn-lg px-4" disabled>
+                        <i class="bi bi-x-circle me-2"></i> Booking Closed
                     </button>
                 }
             </div>
         </div>
     </div>
 </div>
-
-
-@* <form action="/Customer/Cart/AddToCart"> *@
-@*     <input type="hidden" name="productId" value="@Model.Product.Id" /> *@
-@*     <input class="form-control text-center me-3" id="inputQuantity" type="number" name="count" value="1" style="max-width: 3rem" /> *@
-@*     <button type="submit" class="btn btn-outline-dark flex-shrink-0"> *@
-@*         <i class="bi-cart-fill me-1"></i> *@
-@*         Add to cart *@
-@*     </button> *@
 
 
 <!-- Related Movies Section -->
@@ -214,11 +223,58 @@
         background: rgba(255, 255, 255, 0.3);
     }
 
-    /* Hide scrollbar */
-    .movie-scroll-container::-webkit-scrollbar,
-    .movie-scroll::-webkit-scrollbar {
-        display: none;
+    /* Remove default number input arrows */
+    input::-webkit-outer-spin-button,
+    input::-webkit-inner-spin-button {
+        -webkit-appearance: none;
+        margin: 0;
     }
+
+    input[type="number"] {
+        -moz-appearance: textfield; /* For Firefox */
+        text-align: center;
+        color: white;
+        font-weight: bold;
+        border: none;
+        background: transparent;
+        width: 40px;
+    }
+
+    .quantity-group {
+        display: flex;
+
+        align-items: center;
+        border: 1px solid white;
+        border-radius: 5px;
+        overflow: hidden;
+    }
+
+        .quantity-group button {
+            background: transparent;
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            cursor: pointer;
+            font-size: 1rem;
+        }
+
+            .quantity-group button:hover {
+                background: #444;
+            }
+
 </style>
 
 
+<script>
+    function decreaseQuantity() {
+        let input = document.getElementById("inputQuantity");
+        if (parseInt(input.value) > 1) {
+            input.value = parseInt(input.value) - 1;
+        }
+    }
+
+    function increaseQuantity() {
+        let input = document.getElementById("inputQuantity");
+        input.value = parseInt(input.value) + 1;
+    }
+</script>

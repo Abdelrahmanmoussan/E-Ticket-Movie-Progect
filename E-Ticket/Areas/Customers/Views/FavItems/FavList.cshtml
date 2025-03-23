@@ -4,38 +4,140 @@
     ViewData["Title"] = "FavList";
 }
 
-<h1>FavList</h1>
+<style>
+    body {
+        background-color: #141414; /* Netflix dark background */
+        color: white;
+        font-family: Arial, sans-serif;
+    }
 
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Movie)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.ApplicationUser)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Movie.Id)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.ApplicationUser.Id)
-            </td>
-            <td>
-                @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
-                @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
-                @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })
-            </td>
-        </tr>
-}
-    </tbody>
-</table>
+    .container {
+        max-width: 900px;
+        margin: auto;
+        padding-top: 20px;
+    }
+
+    h1 {
+        font-size: 2rem;
+        font-weight: bold;
+        margin-bottom: 20px;
+        text-align: center;
+    }
+
+    .fav-list {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+    }
+
+    .fav-item {
+        display: flex;
+        align-items: center;
+        background-color: #222;
+        padding: 15px;
+        margin-bottom: 10px;
+        border-radius: 10px;
+        transition: transform 0.3s ease-in-out;
+    }
+
+        .fav-item:hover {
+            transform: scale(1.02);
+        }
+
+        .fav-item img {
+            width: 80px;
+            height: 120px;
+            object-fit: cover;
+            border-radius: 5px;
+            margin-right: 15px;
+        }
+
+    .movie-details {
+        flex-grow: 1;
+    }
+
+    .movie-title {
+        font-size: 18px;
+        font-weight: bold;
+    }
+
+    .btn-container {
+        display: flex;
+        gap: 10px;
+    }
+
+    .btn-custom {
+        padding: 8px 12px;
+        border-radius: 5px;
+        cursor: pointer;
+        text-decoration: none;
+        font-size: 14px;
+    }
+
+    .btn-details {
+        background-color: #e50914;
+        color: white;
+        border: none;
+    }
+
+        .btn-details:hover {
+            background-color: #b20710;
+        }
+
+    .btn-add-cart {
+        background-color: #f5c518;
+        color: black;
+        border: none;
+    }
+
+        .btn-add-cart:hover {
+            background-color: #d4a516;
+        }
+
+    .btn-remove {
+        background-color: #444;
+        color: white;
+        border: none;
+    }
+
+        .btn-remove:hover {
+            background-color: #666;
+        }
+</style>
+
+<div class="container">
+    <h1>My Favorites</h1>
+
+    @if (!Model.Any())
+    {
+        <div class="bg-dark alert text-center mt-5">
+            <h4>Your Fav List is empty.</h4>
+            <a asp-area="Customers" asp-controller="Movies" asp-action="Index" class="btn btn-danger mt-3">Back to Movies</a>
+        </div>
+    }
+    else{
+
+    <ul class="fav-list">
+        @foreach (var item in Model)
+        {
+            <li class="fav-item">
+                <img src="~/images/movies/@item.Movie.ImgUrl" alt="Movie Poster">
+
+                <div class="movie-details">
+                    <div class="movie-title">@item.Movie.Name</div>
+                </div>
+
+                <div class="btn-container">
+                    <a asp-area="Customers" asp-controller="Movies" asp-action="Details" asp-route-MovieId="@item.MovieId" class="btn btn-outline-info btn-sm">Show Details</a>
+
+
+                    <form asp-action="Delete" asp-route-MovieId="@item.MovieId" method="post">
+                        @Html.AntiForgeryToken()
+                            <button type="submit" class="btn btn-danger btn-lg py-sm-1">🗑 Delete</button>
+                    </form>
+                </div>
+            </li>
+        }
+    </ul>
+    }
+</div>
